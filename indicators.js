@@ -2,9 +2,11 @@ module.exports = new Map(
 	Object.entries({
 		j: 'Joking',
 		hj: 'Half Joking',
-		s: 'Sarcastic',
+		sarc: 'Sarcastic',
+		s: 'Sarcastic', // Alias for sarc
 		gen: 'Genuine',
-		g: 'Genuine', // Alias for gen
+		g: 'Genuine', // Alias for gen,
+		genq: 'Genuine Question',
 		srs: 'Serious',
 		nsrs: 'Non-Serious',
 		pos: 'Positive Connotation',
@@ -14,6 +16,7 @@ module.exports = new Map(
 		nc: 'Negative Connotation', // Alias for neg
 		p: 'Platonic',
 		r: 'Romantic',
+		a: 'Alterous',
 		c: 'Copypasta',
 		ly: 'Lyrics',
 		l: 'Lyrics', // Alias for ly
@@ -21,6 +24,8 @@ module.exports = new Map(
 		nm: 'Not Mad',
 		lu: 'A Little Upset',
 		nbh: 'Not Directed At Anybody Here',
+		nay: 'Not Directed At You',
+		ay: 'Directed At You',
 		nsb: 'Not Subtweeting',
 		sx: 'Sexual Intent',
 		x: 'Sexual Intent', // Alias for sx
@@ -33,8 +38,14 @@ module.exports = new Map(
 		m: 'Metaphorically',
 		li: 'Literally',
 		hyp: 'Hyperbole',
+		ex: 'Exaggeration',
 		f: 'Fake',
+		q: 'Quote',
 		th: 'Threat',
 		cb: 'Clickbait',
+		ref: 'Reference',
+		nf: 'Not Forced',
+		nbr: 'Not Being Rude',
+		ot: 'Off-Topic',
 	}),
 );
