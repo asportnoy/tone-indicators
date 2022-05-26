@@ -21,7 +21,7 @@ module.exports = class MessageTooltips extends Plugin {
 			if (typeof el !== 'string') return el;
 
 			// Match tone indicators
-			let indicators = el.split(/\B\/(\w+)(?=\s|$)/g);
+			let indicators = el.split(/\B\/(\w+)(?=\b)/g);
 			if (!indicators) return el;
 
 			// Filter out any non-valid indicators
