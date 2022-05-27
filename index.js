@@ -10,7 +10,7 @@ module.exports = class MessageTooltips extends Plugin {
 		const parser = await getModule(['parse', 'parseTopic']);
 		const process = this.process.bind(this);
 
-		inject('message-tooltips', parser, 'parse', process);
+		inject('tone-indicators-popup', parser, 'parse', process);
 	}
 
 	process(_args, res, ops = {}) {
@@ -58,6 +58,6 @@ module.exports = class MessageTooltips extends Plugin {
 
 	pluginWillUnload() {
 		powercord.api.settings.unregisterSettings(this.entityID);
-		uninject('message-tooltips');
+		uninject('tone-indicators-popup');
 	}
 };
