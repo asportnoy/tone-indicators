@@ -16,41 +16,42 @@ module.exports = class MessageTooltips extends Plugin {
 	process(_args, res, ops = {}) {
 		if (!Array.isArray(res)) return res;
 
-		// Get last element in res
+		// Loop through each part of the message
 		return res.map(el => {
+			// If it's not a string we don't care about it
 			if (typeof el !== 'string') return el;
 
 			// Match tone indicators
+			// https://regexr.com/6mhl5
 			let indicators = el.split(
 				/(?<=\p{P}|^|\s)\/([A-z]+)(?=\p{P}|$|\s)/gu,
 			);
+			// No mataches, just return as-is
 			if (!indicators) return el;
 
 			// Filter out any non-valid indicators
+
+			// To store the finished parts
 			let res = [];
 			let wasLastInvalid = false;
 			for (let [i, indicator] of indicators.entries()) {
 				if (typeof indicator !== 'string') continue;
+
 				// Even items are non-matches. Just add them back and continue
 				if (i % 2 === 0) {
-					// If the last indicator was invalid, this should be added to the most recent string instead of a new array element
+					// If the last indicator was invalid, this string should combined with the last string.
+					// Otherwise, create a new item in the array.
 					if (wasLastInvalid) res[res.length - 1] += indicator;
 					else res.push(indicator);
-					continue;
-				}
-
-				wasLastInvalid = false;
-
-				// If an indicator is a match, just add it to the array
-				if (INDICATORS.has(indicator.toLowerCase())) {
+				} else if (INDICATORS.has(indicator.toLowerCase())) {
+					// Valid indicator, just add it to the array
 					res.push(indicator);
-					continue;
+					wasLastInvalid = false;
+				} else {
+					// Invalid indicator, add it to the last string
+					res[res.length - 1] += '/' + indicator;
+					wasLastInvalid = true;
 				}
-
-				// Invalid indicator
-				// Add it to the last string and mark it as invalid
-				res[res.length - 1] += '/' + indicator;
-				wasLastInvalid = true;
 			}
 
 			return React.createElement(StringPart, {
