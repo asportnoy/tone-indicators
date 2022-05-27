@@ -9,6 +9,7 @@ class StringPart extends React.PureComponent {
 
 		for (let i = 1; i < parts.length; i += 2) {
 			let text = parts[i];
+			if (typeof text !== 'string') continue;
 			let tooltip = INDICATORS.get(text.toLowerCase());
 
 			parts[i] = (
