@@ -1,16 +1,34 @@
 const {Plugin} = require('powercord/entities');
 const {inject, uninject} = require('powercord/injector');
 const {React, getModule} = require('powercord/webpack');
+const {open} = require('powercord/modal');
+
 const INDICATORS = require('./indicators');
 
 const StringPart = require('./Components/StringPart');
+const Modal = require('./Components/Modal');
+const {getIndicator} = require('./util');
+
+const {MenuItem} = getModule(['MenuItem'], false);
 
 module.exports = class MessageTooltips extends Plugin {
 	async startPlugin() {
 		const parser = await getModule(['parse', 'parseTopic']);
 		const process = this.process.bind(this);
 
+		const ChannelAttachMenu = await getModule(
+			m => m.default?.displayName == 'ChannelAttachMenu',
+		);
+
+		const uploadmenu = this.uploadmenu.bind(this);
+
 		inject('tone-indicators-popup', parser, 'parse', process);
+		inject(
+			'tone-indicators-upload',
+			ChannelAttachMenu,
+			'default',
+			uploadmenu,
+		);
 	}
 
 	process(_args, res, ops = {}) {
@@ -43,7 +61,7 @@ module.exports = class MessageTooltips extends Plugin {
 					// Otherwise, create a new item in the array.
 					if (wasLastInvalid) res[res.length - 1] += indicator;
 					else res.push(indicator);
-				} else if (INDICATORS.has(indicator.toLowerCase())) {
+				} else if (getIndicator(indicator) !== null) {
 					// Valid indicator, just add it to the array
 					res.push(indicator);
 					wasLastInvalid = false;
@@ -60,8 +78,20 @@ module.exports = class MessageTooltips extends Plugin {
 		});
 	}
 
+	uploadmenu(_args, value) {
+		value.props.children.push(
+			React.createElement(MenuItem, {
+				label: 'Insert Tone Indicator',
+				id: 'Tone-Indicators-Popup',
+				action: () => open(Modal),
+			}),
+		);
+		return value;
+	}
+
 	pluginWillUnload() {
 		powercord.api.settings.unregisterSettings(this.entityID);
 		uninject('tone-indicators-popup');
+		uninject('tone-indicators-upload');
 	}
 };
