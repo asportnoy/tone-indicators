@@ -30,6 +30,7 @@ module.exports = class MessageTooltips extends Plugin {
 			let res = [];
 			let wasLastInvalid = false;
 			for (let [i, indicator] of indicators.entries()) {
+				if (typeof indicator !== 'string') continue;
 				// Even items are non-matches. Just add them back and continue
 				if (i % 2 === 0) {
 					// If the last indicator was invalid, this should be added to the most recent string instead of a new array element
