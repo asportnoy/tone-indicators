@@ -1,5 +1,6 @@
 const {React, getModuleByDisplayName} = require('powercord/webpack');
 const INDICATORS = require('../indicators');
+const {getIndicator} = require('../util');
 
 const Tooltip = getModuleByDisplayName('Tooltip', false);
 
@@ -10,7 +11,7 @@ class StringPart extends React.PureComponent {
 		for (let i = 1; i < parts.length; i += 2) {
 			let text = parts[i];
 			if (typeof text !== 'string') continue;
-			let tooltip = INDICATORS.get(text.toLowerCase());
+			let tooltip = getIndicator(text.toLowerCase());
 
 			parts[i] = (
 				<Tooltip text={tooltip}>
