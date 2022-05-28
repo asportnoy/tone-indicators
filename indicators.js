@@ -1,3 +1,9 @@
+/*
+	List of tone indicators used in this plugin.
+	Aliases for other indicators should be prefixed with an underscore
+	and have a comment saying which indicator they are an alias for.
+ */
+
 module.exports = new Map(
 	Object.entries({
 		j: 'Joking',

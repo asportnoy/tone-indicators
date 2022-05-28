@@ -55,12 +55,18 @@ module.exports = class ToneModal extends React.PureComponent {
 		);
 	}
 
+	/**
+	 * Generate the list of tone indicators
+	 * @param {string} search The search term
+	 */
 	options(search) {
 		let val = [];
 
 		for (let [key, value] of INDICATORS) {
+			// Filter out aliases
 			if (key.startsWith('_')) continue;
 
+			// Check if the item matches the search term
 			if (
 				search &&
 				!('/' + key).includes(search) &&
@@ -68,6 +74,7 @@ module.exports = class ToneModal extends React.PureComponent {
 			)
 				continue;
 
+			// Add the item to the list
 			val.push(
 				<Clickable
 					onClick={() => {

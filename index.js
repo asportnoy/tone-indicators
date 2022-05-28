@@ -3,10 +3,9 @@ const {inject, uninject} = require('powercord/injector');
 const {React, getModule} = require('powercord/webpack');
 const {open} = require('powercord/modal');
 
-const INDICATORS = require('./indicators');
-
 const StringPart = require('./Components/StringPart');
 const Modal = require('./Components/Modal');
+
 const {getIndicator} = require('./util');
 
 const {MenuItem} = getModule(['MenuItem'], false);
@@ -31,6 +30,7 @@ module.exports = class MessageTooltips extends Plugin {
 		);
 	}
 
+	// Process messages to find tone indicators
 	process(_args, res, ops = {}) {
 		if (!Array.isArray(res)) return res;
 
@@ -78,6 +78,7 @@ module.exports = class MessageTooltips extends Plugin {
 		});
 	}
 
+	// Inject the insert button into the upload menu
 	uploadmenu(_args, value) {
 		value.props.children.push(
 			React.createElement(MenuItem, {
