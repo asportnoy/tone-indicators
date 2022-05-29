@@ -5,7 +5,7 @@ const {open} = require('powercord/modal');
 
 const StringPart = require('./Components/StringPart');
 const Modal = require('./Components/Modal');
-const Icon = require('./Components/Icon');
+const Settings = require('./Components/Settings');
 
 const {getIndicator} = require('./util');
 
@@ -29,6 +29,12 @@ module.exports = class MessageTooltips extends Plugin {
 			'default',
 			uploadmenu,
 		);
+
+		powercord.api.settings.registerSettings(this.entityID, {
+			category: this.entityID,
+			label: 'Tone Indicators',
+			render: Settings,
+		});
 	}
 
 	// Process messages to find tone indicators
@@ -81,11 +87,36 @@ module.exports = class MessageTooltips extends Plugin {
 
 	// Inject the insert button into the upload menu
 	uploadmenu(_args, value) {
+		if (!this.settings.get('showInsertToneBtn', true)) return value;
 		value.props.children.push(
 			React.createElement(MenuItem, {
-				label: 'Insert Tone Indicator',
+				label: React.createElement(
+					'div',
+					{
+						className: 'optionLabel-1o-h-l',
+					},
+					null,
+					React.createElement('div', {
+						className: 'fas fa-smile optionIcon-1Ft8w0 ',
+						style: {
+							fontSize: '18px',
+							textAlign: 'center',
+							verticalAlign: 'middle',
+							width: '24px',
+							height: '24px',
+							lineHeight: '24px',
+						},
+					}),
+					React.createElement(
+						'div',
+						{
+							className: 'optionName-1ebPjH',
+						},
+						null,
+						'Insert Tone Indicator',
+					),
+				),
 				id: 'Tone-Indicators-Popup',
-				icon: () => React.createElement(Icon),
 				showIconFirst: true,
 				action: () => open(Modal),
 			}),
