@@ -5,6 +5,7 @@ const {open} = require('powercord/modal');
 
 const StringPart = require('./Components/StringPart');
 const Modal = require('./Components/Modal');
+const Icon = require('./Components/Icon');
 
 const {getIndicator} = require('./util');
 
@@ -84,6 +85,8 @@ module.exports = class MessageTooltips extends Plugin {
 			React.createElement(MenuItem, {
 				label: 'Insert Tone Indicator',
 				id: 'Tone-Indicators-Popup',
+				icon: () => React.createElement(Icon),
+				showIconFirst: true,
 				action: () => open(Modal),
 			}),
 		);
