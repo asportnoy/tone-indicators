@@ -1,15 +1,16 @@
-const {Plugin} = require('powercord/entities');
-const {inject, uninject} = require('powercord/injector');
-const {React, getModule} = require('powercord/webpack');
-const {open} = require('powercord/modal');
+/* global powercord */
+const { Plugin } = require('powercord/entities');
+const { inject, uninject } = require('powercord/injector');
+const { React, getModule } = require('powercord/webpack');
+const { open } = require('powercord/modal');
 
 const StringPart = require('./Components/StringPart');
 const Modal = require('./Components/Modal');
 const Settings = require('./Components/Settings');
 
-const {getIndicator} = require('./util');
+const { getIndicator } = require('./util');
 
-const {MenuItem} = getModule(['MenuItem'], false);
+const { MenuItem } = getModule(['MenuItem'], false);
 
 module.exports = class MessageTooltips extends Plugin {
 	async startPlugin() {
@@ -17,7 +18,7 @@ module.exports = class MessageTooltips extends Plugin {
 		const process = this.process.bind(this);
 
 		const ChannelAttachMenu = await getModule(
-			m => m.default?.displayName == 'ChannelAttachMenu',
+			m => m.default?.displayName === 'ChannelAttachMenu',
 		);
 
 		const uploadmenu = this.uploadmenu.bind(this);
@@ -38,13 +39,21 @@ module.exports = class MessageTooltips extends Plugin {
 	}
 
 	// Process messages to find tone indicators
-	process(_args, res, ops = {}) {
+	process(_args, res = {}) {
 		if (!Array.isArray(res)) return res;
 
 		// Loop through each part of the message
 		return res.map(el => {
 			// If it's not a string we don't care about it
-			if (typeof el !== 'string') return el;
+			if (typeof el !== 'string') {
+				let children = el?.props?.children;
+				if (!children) return el;
+				let isFn = typeof children === 'function';
+				if (isFn) children = children();
+				let val = this.process(_args, children);
+				if (children) el.props.children = isFn ? () => val : val;
+				return el;
+			}
 
 			// Match tone indicators
 			// https://regexr.com/6mhl5
