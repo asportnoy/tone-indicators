@@ -41,7 +41,6 @@ module.exports = class MessageTooltips extends Plugin {
 
 	// Process messages to find tone indicators
 	process(_args, res = {}) {
-		console.log(res);
 		if (!Array.isArray(res)) return res;
 
 		// Loop through each part of the message
