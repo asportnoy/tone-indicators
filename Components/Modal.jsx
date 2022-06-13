@@ -1,6 +1,6 @@
-const {React, getModule} = require('powercord/webpack');
-const {Modal} = require('powercord/components/modal');
-const {close: closeModal} = require('powercord/modal');
+const { React, getModule } = require('powercord/webpack');
+const { Modal } = require('powercord/components/modal');
+const { close: closeModal } = require('powercord/modal');
 const {
 	FormTitle,
 	Button,
@@ -8,12 +8,12 @@ const {
 	Clickable,
 	Card,
 } = require('powercord/components');
-const {TextInput} = require('powercord/components/settings');
+const { TextInput } = require('powercord/components/settings');
 
 const classes = getModule(['card', 'clickable'], false);
 
 const INDICATORS = require('../indicators');
-const {appendText} = require('../util');
+const { appendText } = require('../util');
 
 module.exports = class ToneModal extends React.PureComponent {
 	constructor(props) {
@@ -33,9 +33,9 @@ module.exports = class ToneModal extends React.PureComponent {
 
 				<Modal.Content>
 					<TextInput
-						style={{marginTop: 16}}
+						style={{ marginTop: 16 }}
 						placeholder="Search for a tone indicator"
-						onChange={val => this.setState({search: val})}
+						onChange={val => this.setState({ search: val })}
 						value={this.state.search}
 						autoFocus
 					></TextInput>
@@ -68,9 +68,9 @@ module.exports = class ToneModal extends React.PureComponent {
 
 			// Check if the item matches the search term
 			if (
-				search &&
-				!('/' + key).includes(search) &&
-				!value.toLowerCase().includes(search)
+				search
+				&& !('/' + key).includes(search)
+				&& !value.toLowerCase().includes(search)
 			)
 				continue;
 

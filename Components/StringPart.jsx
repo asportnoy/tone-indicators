@@ -1,21 +1,20 @@
-const {React, getModuleByDisplayName} = require('powercord/webpack');
-const INDICATORS = require('../indicators');
-const {getIndicator} = require('../util');
+const { React, getModuleByDisplayName } = require('powercord/webpack');
+const { getIndicator } = require('../util');
 
 const Tooltip = getModuleByDisplayName('Tooltip', false);
 
 class StringPart extends React.PureComponent {
 	render() {
-		const {parts} = this.props;
+		const { parts } = this.props;
 
 		for (let i = 1; i < parts.length; i += 2) {
 			let text = parts[i];
 			if (typeof text !== 'string') continue;
 			let tooltip = getIndicator(text.toLowerCase());
 
-			parts[i] = (
-				<Tooltip text={tooltip}>
-					{props => (
+			parts[i] 
+				= <Tooltip text={tooltip}>
+					{props => 
 						<span
 							{...props}
 							style={{
@@ -27,9 +26,9 @@ class StringPart extends React.PureComponent {
 						>
 							/{text}
 						</span>
-					)}
+					}
 				</Tooltip>
-			);
+			;
 		}
 
 		return parts;

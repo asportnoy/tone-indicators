@@ -1,8 +1,8 @@
 const {
 	getModule,
-	constants: {ComponentActions},
+	constants: { ComponentActions },
 } = require('powercord/webpack');
-const {ComponentDispatch} = getModule(['ComponentDispatch'], false);
+const { ComponentDispatch } = getModule(['ComponentDispatch'], false);
 
 const INDICATORS = require('./indicators');
 
