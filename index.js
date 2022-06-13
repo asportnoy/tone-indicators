@@ -24,6 +24,7 @@ module.exports = class MessageTooltips extends Plugin {
 		const uploadmenu = this.uploadmenu.bind(this);
 
 		inject('tone-indicators-popup', parser, 'parse', process);
+		inject('tone-indicators-popup-embed', parser, 'parseEmbedTitle', process);
 		inject(
 			'tone-indicators-upload',
 			ChannelAttachMenu,
@@ -40,6 +41,7 @@ module.exports = class MessageTooltips extends Plugin {
 
 	// Process messages to find tone indicators
 	process(_args, res = {}) {
+		console.log(res);
 		if (!Array.isArray(res)) return res;
 
 		// Loop through each part of the message
@@ -136,6 +138,7 @@ module.exports = class MessageTooltips extends Plugin {
 	pluginWillUnload() {
 		powercord.api.settings.unregisterSettings(this.entityID);
 		uninject('tone-indicators-popup');
+		uninject('tone-indicators-popup-embed');
 		uninject('tone-indicators-upload');
 	}
 };
