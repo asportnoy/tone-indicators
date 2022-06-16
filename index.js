@@ -62,7 +62,7 @@ module.exports = class MessageTooltips extends Plugin {
 			// Match tone indicators
 			// https://regexr.com/6mhl5
 			let indicators = el.split(
-				/(?<=\p{P}|^|\s)\/([A-z]+)(?=\p{P}|$|\s)/gu,
+				/(?<=\p{P}|^|\s)\/([a-z]+)(?=\p{P}|$|\s)/gui,
 			);
 			// No mataches, just return as-is
 			if (!indicators) return el;
