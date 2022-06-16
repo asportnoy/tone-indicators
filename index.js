@@ -55,6 +55,9 @@ module.exports = class MessageTooltips extends Plugin {
 				if (children) el.props.children = isFn ? () => val : val;
 				return el;
 			}
+			
+			// Don't match inside of links
+			if (/^https?:\/\/[^\s]+$/.test(el)) return el;
 
 			// Match tone indicators
 			// https://regexr.com/6mhl5
