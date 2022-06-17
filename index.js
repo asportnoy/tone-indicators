@@ -47,12 +47,19 @@ module.exports = class MessageTooltips extends Plugin {
 		return res.map(el => {
 			// If it's not a string we don't care about it
 			if (typeof el !== 'string') {
-				let children = el?.props?.children;
-				if (!children) return el;
-				let isFn = typeof children === 'function';
-				if (isFn) children = children();
-				let val = this.process(_args, children);
-				if (children) el.props.children = isFn ? () => val : val;
+				try {
+					let children = el?.props?.children;
+					if (!children) return el;
+					let isFn = typeof children === 'function';
+					if (isFn) {
+						if (children.length !== 0) return el;
+						children = children();
+					}
+					let val = this.process(_args, children);
+					if (children) el.props.children = isFn ? () => val : val;
+				} catch (e) {
+					return el;
+				}
 				return el;
 			}
 			
