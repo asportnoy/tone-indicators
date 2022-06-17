@@ -48,6 +48,9 @@ module.exports = class MessageTooltips extends Plugin {
 			// If it's not a string we don't care about it
 			if (typeof el !== 'string') {
 				try {
+					// Fix conflict with powercord-message-tooltips
+					if (el?.props?.parts) el.props.parts = this.process(_args, el.props.parts);
+
 					let children = el?.props?.children;
 					if (!children) return el;
 					let isFn = typeof children === 'function';
