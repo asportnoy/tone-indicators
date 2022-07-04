@@ -53,5 +53,7 @@ module.exports = new Map(
 		nf: 'Not Forced',
 		nbr: 'Not Being Rude',
 		ot: 'Off-Topic',
+		nj: 'Not Joking',
+		naj: 'Not A Joke',
 	}),
 );
