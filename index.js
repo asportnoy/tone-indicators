@@ -45,11 +45,10 @@ module.exports = class MessageTooltips extends Plugin {
 
 		// Loop through each part of the message
 		return res.map(el => {
-			// If it's not a string we don't care about it
 			if (typeof el !== 'string') {
 				try {
 					// Fix conflict with powercord-message-tooltips
-					if (el?.props?.parts) el.props.parts = this.process(_args, el.props.parts);
+					if (el?.props?.parts) return el;
 
 					let children = el?.props?.children;
 					if (!children) return el;
