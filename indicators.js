@@ -13,6 +13,7 @@ module.exports = new Map(
 		gen: 'Genuine',
 		_g: 'Genuine', // Alias for gen,
 		genq: 'Genuine Question',
+		_gq: 'Genuine Question', // Alias for genq
 		srs: 'Serious',
 		nsrs: 'Non-Serious',
 		pos: 'Positive Connotation',
