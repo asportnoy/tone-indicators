@@ -12,7 +12,7 @@ const { getIndicator } = require('./util');
 
 const { MenuItem } = getModule(['MenuItem'], false);
 
-module.exports = class MessageTooltips extends Plugin {
+module.exports = class ToneIndicators extends Plugin {
 	async startPlugin() {
 		const parser = await getModule(['parse', 'parseTopic']);
 		const process = this.process.bind(this);
@@ -52,25 +52,25 @@ module.exports = class MessageTooltips extends Plugin {
 
 					let children = el?.props?.children;
 					if (!children) return el;
-					let isFn = typeof children === 'function';
+					const isFn = typeof children === 'function';
 					if (isFn) {
 						if (children.length !== 0) return el;
 						children = children();
 					}
-					let val = this.process(_args, children);
+					const val = this.process(_args, children);
 					if (children) el.props.children = isFn ? () => val : val;
 				} catch (e) {
 					return el;
 				}
 				return el;
 			}
-			
+
 			// Don't match inside of links
 			if (/^https?:\/\/[^\s]+$/.test(el)) return el;
 
 			// Match tone indicators
 			// https://regexr.com/6mhl5
-			let indicators = el.split(
+			const indicators = el.split(
 				/(?<=\p{P}|^|\s)\/([a-z]+)(?=\p{P}|$|\s)/gui,
 			);
 			// No mataches, just return as-is
@@ -79,9 +79,9 @@ module.exports = class MessageTooltips extends Plugin {
 			// Filter out any non-valid indicators
 
 			// To store the finished parts
-			let res = [];
+			const res = [];
 			let wasLastInvalid = false;
-			for (let [i, indicator] of indicators.entries()) {
+			for (const [i, indicator] of indicators.entries()) {
 				if (typeof indicator !== 'string') continue;
 
 				// Even items are non-matches. Just add them back and continue
