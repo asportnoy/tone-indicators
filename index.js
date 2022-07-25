@@ -45,10 +45,11 @@ module.exports = class ToneIndicators extends Plugin {
 
 		// Loop through each part of the message
 		return res.map(el => {
+			console.log(el);
 			if (typeof el !== 'string') {
 				try {
 					// Fix conflict with powercord-message-tooltips
-					if (el?.props?.parts) return el;
+					if (el?.props?.parts) return this.process(_args, el.props.parts);
 
 					let children = el?.props?.children;
 					if (!children) return el;
@@ -73,7 +74,7 @@ module.exports = class ToneIndicators extends Plugin {
 			const indicators = el.split(
 				/(?<=\p{P}|^|\s)\/([a-z]+)(?=\p{P}|$|\s)/gui,
 			);
-			// No mataches, just return as-is
+			// No matches, just return as-is
 			if (!indicators) return el;
 
 			// Filter out any non-valid indicators
