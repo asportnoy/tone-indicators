@@ -45,7 +45,6 @@ module.exports = class ToneIndicators extends Plugin {
 
 		// Loop through each part of the message
 		return res.map(el => {
-			console.log(el);
 			if (typeof el !== 'string') {
 				try {
 					// Fix conflict with powercord-message-tooltips
