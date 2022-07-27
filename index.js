@@ -73,7 +73,7 @@ module.exports = class ToneIndicators extends Plugin {
 			const indicators = el.split(
 				/(?<=\p{P}|^|\s)\/([a-z]+)(?=\p{P}|$|\s)/gui,
 			);
-			// No mataches, just return as-is
+			// No matches, just return as-is
 			if (!indicators) return el;
 
 			// Filter out any non-valid indicators
