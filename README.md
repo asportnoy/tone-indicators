@@ -1,6 +1,6 @@
 # powercord-tone-indicators
 
-[![Install in Replugged](https://img.shields.io/static/v1?style=for-the-badge&label=Install%20in&message=Replugged&color=green)](https://replugged.dev/install?url=asportnoy/powercord-tone-indicators)
+[Install in Replugged](https://replugged.dev/install?url=asportnoy/powercord-tone-indicators)
 
 This plugin adds utilities for tone indicators!
 
