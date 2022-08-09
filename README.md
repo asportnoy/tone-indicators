@@ -1,4 +1,4 @@
-# powercord-tone-indicators
+# Powercord Tone Indicators
 
 [Install in Replugged](https://replugged.dev/install?url=asportnoy/powercord-tone-indicators)
 
