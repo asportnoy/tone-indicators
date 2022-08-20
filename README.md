@@ -1,6 +1,6 @@
 # Tone Indicators
 
-Adds utilities for tone indicators:
+Utilities for tone indicators:
 
 -   Adds a tooltip to tone indicators in messages to show what they mean
 -   Adds an option to the upload menu to insert a tone indicator
