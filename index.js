@@ -37,7 +37,7 @@ module.exports = class ToneIndicators extends Plugin {
 				indicator: match[1],
 				desc: getIndicator(match[1]),
 			}),
-			react: node => ToneIndicator(node),
+			react: ToneIndicator,
 		};
 		this.embedTitleRules.toneIndicator = parser.defaultRules.toneIndicator;
 		this.refreshParsers();
