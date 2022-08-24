@@ -4,7 +4,7 @@ const { inject, uninject } = require('powercord/injector');
 const { React, getModule } = require('powercord/webpack');
 const { open } = require('powercord/modal');
 
-const StringPart = require('./Components/StringPart');
+const ToneIndicator = require('./Components/ToneIndicator');
 const Modal = require('./Components/Modal');
 const Settings = require('./Components/Settings');
 
@@ -12,10 +12,35 @@ const { getIndicator } = require('./util');
 
 const { MenuItem } = getModule(['MenuItem'], false);
 
+const LOOKBEHIND_PATTERN = /\p{P}|\s$/u;
+const INDICATOR_PATTERN = /^\/([a-z]+)(?=\p{P}|$|\s)/i;
+
 module.exports = class ToneIndicators extends Plugin {
 	async startPlugin() {
-		const parser = await getModule(['parse', 'parseTopic']);
-		const process = this.process.bind(this);
+		const parser = this.parser = await getModule(['parse', 'parseTopic']);
+
+		await this.createEmbedTitleRules();
+
+		parser.defaultRules.toneIndicator = {
+			order: parser.defaultRules.text.order - 1,
+			match: (source, state) => {
+				if (state.prevCapture && !LOOKBEHIND_PATTERN.test(state.prevCapture)) {
+					return null;
+				}
+				const match = INDICATOR_PATTERN.exec(source);
+				if (match === null) return null;
+				const desc = getIndicator(match[1]);
+				if (desc === null) return null;
+				return match;
+			},
+			parse: match => ({
+				indicator: match[1],
+				desc: getIndicator(match[1]),
+			}),
+			react: node => ToneIndicator(node),
+		};
+		this.embedTitleRules.toneIndicator = parser.defaultRules.toneIndicator;
+		this.refreshParsers();
 
 		const ChannelAttachMenu = await getModule(
 			m => m.default?.displayName === 'ChannelAttachMenu',
@@ -23,8 +48,6 @@ module.exports = class ToneIndicators extends Plugin {
 
 		const uploadmenu = this.uploadmenu.bind(this);
 
-		inject('tone-indicators-popup', parser, 'parse', process);
-		inject('tone-indicators-popup-embed', parser, 'parseEmbedTitle', process);
 		inject(
 			'tone-indicators-upload',
 			ChannelAttachMenu,
@@ -39,72 +62,23 @@ module.exports = class ToneIndicators extends Plugin {
 		});
 	}
 
-	// Process messages to find tone indicators
-	process(_args, res = {}) {
-		if (!Array.isArray(res)) return res;
-
-		// Loop through each part of the message
-		return res.map(el => {
-			if (typeof el !== 'string') {
-				try {
-					// Fix conflict with powercord-message-tooltips
-					if (el?.props?.parts) return el;
-
-					let children = el?.props?.children;
-					if (!children) return el;
-					const isFn = typeof children === 'function';
-					if (isFn) {
-						if (children.length !== 0) return el;
-						children = children();
-					}
-					const val = this.process(_args, children);
-					if (children) el.props.children = isFn ? () => val : val;
-				} catch (e) {
-					return el;
-				}
-				return el;
-			}
-
-			// Don't match inside of links
-			if (/^https?:\/\/[^\s]+$/.test(el)) return el;
-
-			// Match tone indicators
-			// https://regexr.com/6mhl5
-			const indicators = el.split(
-				/(?<=\p{P}|^|\s)\/([a-z]+)(?=\p{P}|$|\s)/gui,
-			);
-			// No matches, just return as-is
-			if (!indicators) return el;
-
-			// Filter out any non-valid indicators
-
-			// To store the finished parts
-			const res = [];
-			let wasLastInvalid = false;
-			for (const [i, indicator] of indicators.entries()) {
-				if (typeof indicator !== 'string') continue;
-
-				// Even items are non-matches. Just add them back and continue
-				if (i % 2 === 0) {
-					// If the last indicator was invalid, this string should combined with the last string.
-					// Otherwise, create a new item in the array.
-					if (wasLastInvalid) res[res.length - 1] += indicator;
-					else res.push(indicator);
-				} else if (getIndicator(indicator) !== null) {
-					// Valid indicator, just add it to the array
-					res.push(indicator);
-					wasLastInvalid = false;
-				} else {
-					// Invalid indicator, add it to the last string
-					res[res.length - 1] += '/' + indicator;
-					wasLastInvalid = true;
-				}
-			}
-
-			return React.createElement(StringPart, {
-				parts: res,
-			});
-		});
+	async createEmbedTitleRules() {
+		// this bs is needed because discord doesnt expose their embedTitle rules
+		// management of non-exposed markdown rulesets should probably be a replugged api lol
+		const markdownRules = await getModule(['EMBED_TITLE_RULES']);
+		const { default: createReactRules } = await getModule(m =>
+			m?.default?.toString &&
+			['link', 'emoji', 'customEmoji', 'channel', 'commandMention']
+				.every(snip => m?.default?.toString().includes(snip))
+		);
+		const reactRules = createReactRules({ enableBuildOverrides: false });
+		this.embedTitleRules = {};
+		for (const [name, reactRule] of Object.entries(reactRules)) {
+			this.embedTitleRules[name] = {
+				...markdownRules.EMBED_TITLE_RULES[name],
+				...reactRule,
+			};
+		}
 	}
 
 	// Inject the insert button into the upload menu
@@ -146,10 +120,17 @@ module.exports = class ToneIndicators extends Plugin {
 		return value;
 	}
 
-	pluginWillUnload() {
+	// Recreate parsers with new rules
+	refreshParsers() {
+		this.parser.parse = this.parser.reactParserFor(this.parser.defaultRules);
+		this.parser.parseEmbedTitle = this.parser.reactParserFor(this.embedTitleRules);
+	}
+
+	async pluginWillUnload() {
+		await this.createEmbedTitleRules();
+		delete this.parser.defaultRules.toneIndicator;
+		this.refreshParsers();
 		powercord.api.settings.unregisterSettings(this.entityID);
-		uninject('tone-indicators-popup');
-		uninject('tone-indicators-popup-embed');
 		uninject('tone-indicators-upload');
 	}
 };
