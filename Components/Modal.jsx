@@ -60,9 +60,9 @@ module.exports = class ToneModal extends React.PureComponent {
 	 * @param {string} search The search term
 	 */
 	options(search) {
-		let val = [];
+		const val = [];
 
-		for (let [key, value] of INDICATORS) {
+		for (const [key, value] of INDICATORS) {
 			// Filter out aliases
 			if (key.startsWith('_')) continue;
 
