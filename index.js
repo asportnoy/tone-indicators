@@ -24,7 +24,7 @@ module.exports = class ToneIndicators extends Plugin {
 		parser.defaultRules.toneIndicator = {
 			order: parser.defaultRules.text.order - 1,
 			match: (source, state) => {
-				if (state.prevCapture && !LOOKBEHIND_PATTERN.test(state.prevCapture)) {
+				if (state.prevCapture && !LOOKBEHIND_PATTERN.test(state.prevCapture[0])) {
 					return null;
 				}
 				const match = INDICATOR_PATTERN.exec(source);
