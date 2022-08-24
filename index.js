@@ -67,9 +67,9 @@ module.exports = class ToneIndicators extends Plugin {
 		// management of non-exposed markdown rulesets should probably be a replugged api lol
 		const markdownRules = await getModule(['EMBED_TITLE_RULES']);
 		const { default: createReactRules } = await getModule(m =>
-			m?.default?.toString &&
-			['link', 'emoji', 'customEmoji', 'channel', 'commandMention']
-				.every(snip => m?.default?.toString().includes(snip))
+			m?.default?.toString
+			&& ['link', 'emoji', 'customEmoji', 'channel', 'commandMention']
+				.every(snip => m?.default?.toString().includes(snip)),
 		);
 		const reactRules = createReactRules({ enableBuildOverrides: false });
 		this.embedTitleRules = {};
