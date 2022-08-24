@@ -12,7 +12,7 @@ const { getIndicator } = require('./util');
 
 const { MenuItem } = getModule(['MenuItem'], false);
 
-const LOOKBEHIND_PATTERN = /\p{P}|\s$/u;
+const LOOKBEHIND_PATTERN = /(?:\p{P}|\s)$/u;
 const INDICATOR_PATTERN = /^\/([a-z]+)(?=\p{P}|$|\s)/iu;
 
 module.exports = class ToneIndicators extends Plugin {
