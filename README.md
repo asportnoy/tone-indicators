@@ -3,7 +3,7 @@
 Utilities for tone indicators:
 
 - Adds a tooltip to tone indicators in messages to show what they mean
-- Adds an option to the upload menu to insert a tone indicator
+- ~~Adds an option to the upload menu to insert a tone indicator~~ (COMING SOON)
 
 Works with Replugged.
 
