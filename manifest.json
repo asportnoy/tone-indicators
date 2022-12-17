@@ -1,7 +1,18 @@
 {
-    "name": "Tone Indicators",
-    "version": "1.4.0",
-    "description": "Add a tooltip to tone indicators with their meaning",
-    "author": "asportnoy#6969",
-    "license": "MIT"
+  "id": "dev.albertp.ToneIndicators",
+  "name": "Tone Indicators",
+  "description": "Add a tooltip to tone indicators with their meaning",
+  "author": {
+    "name": "asportnoy",
+    "discordID": "489484338514100234",
+    "github": "asportnoy"
+  },
+  "version": "1.0.0",
+  "updater": {
+    "type": "github",
+    "id": "asportnoy/tone-indicators"
+  },
+  "license": "MIT",
+  "type": "replugged-plugin",
+  "renderer": "src/index.ts"
 }
