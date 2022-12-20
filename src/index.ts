@@ -1,5 +1,4 @@
-import React from "react";
-import { ModuleExports, webpack } from "replugged";
+import { types, webpack } from "replugged";
 import indicators from "./indicators";
 import toneIndicator, { ToneIndicatorProps } from "./ToneIndicator";
 
@@ -38,15 +37,14 @@ function refresh(parser: Parser): void {
 let parser: Parser | null;
 
 export async function start(): Promise<void> {
-  parser = await webpack.waitForModule<ModuleExports & Parser>(
+  parser = await webpack.waitForModule<types.ModuleExports & Parser>(
     webpack.filters.byProps("parse", "parseTopic"),
   );
 
-  const tooltipMod = await webpack.waitForModule<Record<string, typeof React.Component>>(
+  const tooltipMod = await webpack.waitForModule<Record<string, React.FC>>(
     webpack.filters.bySource(TOOLTIP_RGX),
   );
-  const Tooltip =
-    tooltipMod && webpack.getFunctionBySource<typeof React.Component>(TOOLTIP_RGX, tooltipMod);
+  const Tooltip = tooltipMod && webpack.getFunctionBySource<React.FC>(TOOLTIP_RGX, tooltipMod);
   if (!Tooltip) {
     console.error("Failed to find Tooltip component");
     return;

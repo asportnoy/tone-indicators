@@ -9,7 +9,7 @@
     "build": "tsx scripts/build.ts",
     "watch": "tsx scripts/build.ts --watch",
     "bundle": "tsx scripts/bundle.ts",
-    "build-and-bundle": "NO_INSTALL=true pnpm run build && pnpm run bundle",
+    "build-and-bundle": "pnpm run build --no-install && pnpm run bundle",
     "check": "tsc --noEmit",
     "prettier:check": "prettier ./src ./scripts --check",
     "eslint:check": "eslint ./src ./scripts",
@@ -35,8 +35,7 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-react": "^7.31.10",
     "prettier": "^2.8.1",
-    "react": "^18.2.0",
-    "replugged": "4.0.0-beta0.17",
+    "replugged": "4.0.0-beta0.18",
     "tsx": "^3.10.3",
     "typescript": "^4.8.4"
   }

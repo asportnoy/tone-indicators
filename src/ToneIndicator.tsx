@@ -5,7 +5,12 @@ export interface ToneIndicatorProps {
   desc: string;
 }
 
-function ToneIndicator(Tooltip: typeof React.Component) {
+function ToneIndicator(
+  Tooltip: React.FC<{
+    text: string;
+    children: (props: React.HTMLAttributes<HTMLSpanElement>) => JSX.Element;
+  }>,
+) {
   return (node: ToneIndicatorProps): React.ReactElement => {
     if (!Tooltip) {
       console.log("not found");
