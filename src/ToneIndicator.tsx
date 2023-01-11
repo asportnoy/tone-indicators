@@ -1,4 +1,5 @@
-import React from "react";
+import { common } from "replugged";
+const { React } = common;
 
 export interface ToneIndicatorProps {
   indicator: string;
