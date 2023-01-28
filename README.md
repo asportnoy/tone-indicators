@@ -5,7 +5,7 @@ Utilities for tone indicators:
 - Adds a tooltip to tone indicators in messages to show what they mean
 - ~~Adds an option to the upload menu to insert a tone indicator~~ (COMING SOON)
 
-Works with Replugged.
+[![Install in Replugged](https://img.shields.io/badge/-Install%20in%20Replugged-blue?style=for-the-badge&logo=none)](https://replugged.dev/install?identifier=asportnoy/tone-indicators&source=github)
 
 ## Notes
 
