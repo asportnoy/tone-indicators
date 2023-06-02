@@ -9,8 +9,8 @@
   },
   "version": "1.0.3",
   "updater": {
-    "type": "github",
-    "id": "asportnoy/tone-indicators"
+    "type": "store",
+    "id": "dev.albertp.ToneIndicators"
   },
   "license": "MIT",
   "type": "replugged-plugin",
