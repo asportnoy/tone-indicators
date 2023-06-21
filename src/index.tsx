@@ -1,8 +1,12 @@
 import { common } from "replugged";
 import indicators from "./indicators";
 import ToneIndicator from "./ToneIndicator";
+import { DefaultInRule } from "simple-markdown";
 
 const { parser } = common;
+const defaultRules = parser.defaultRules as typeof parser.defaultRules & {
+  toneIndicator?: DefaultInRule;
+};
 
 const LOOKBEHIND_PATTERN = /(?:\p{P}|\s)$/u;
 const INDICATOR_PATTERN = /^\/([a-z]+)(?=\p{P}|$|\s)/iu;
@@ -13,13 +17,14 @@ function getIndicator(text: string): string | null {
 }
 
 function refresh(): void {
-  parser.parse = parser.reactParserFor(parser.defaultRules);
+  parser.parse = parser.reactParserFor(defaultRules);
 }
 
 export function start(): void {
-  parser.defaultRules.toneIndicator = {
-    order: parser.defaultRules.text.order - 1,
-    match: (source, state) => {
+  // @ts-expect-error ???
+  defaultRules.toneIndicator = {
+    order: defaultRules.text.order - 1,
+    match: (source: string, state) => {
       if (state.prevCapture && !LOOKBEHIND_PATTERN.test(state.prevCapture[0])) {
         return null;
       }
@@ -33,7 +38,7 @@ export function start(): void {
       indicator: match[1],
       desc: getIndicator(match[1]),
     }),
-    react: ToneIndicator,
+    react: (node) => <ToneIndicator indicator={node.indicator} desc={node.desc} />,
   };
 
   refresh();
@@ -41,7 +46,7 @@ export function start(): void {
 
 export function stop(): void {
   if (!parser) return;
-  delete parser.defaultRules.toneIndicator;
+  delete defaultRules.toneIndicator;
 
   refresh();
 }
