@@ -1,6 +1,5 @@
-import { common, components } from "replugged";
-const { React } = common;
-const { Tooltip } = components;
+import type React from "react";
+import { Tooltip } from "replugged/components";
 
 export interface ToneIndicatorProps {
   indicator: string;

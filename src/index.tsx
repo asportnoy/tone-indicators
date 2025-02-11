@@ -1,9 +1,8 @@
-import { common } from "replugged";
+import { parser } from "replugged/common";
+import type { DefaultInRule } from "simple-markdown";
 import indicators from "./indicators";
 import ToneIndicator from "./ToneIndicator";
-import { DefaultInRule } from "simple-markdown";
 
-const { parser } = common;
 const defaultRules = parser.defaultRules as typeof parser.defaultRules & {
   toneIndicator?: DefaultInRule;
 };
@@ -21,7 +20,7 @@ function refresh(): void {
 }
 
 export function start(): void {
-  // @ts-expect-error ???
+  // @ts-expect-error outdated types
   defaultRules.toneIndicator = {
     order: defaultRules.text.order - 1,
     match: (source: string, state) => {
@@ -45,6 +44,7 @@ export function start(): void {
 }
 
 export function stop(): void {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!parser) return;
   delete defaultRules.toneIndicator;
 
